@@ -1,0 +1,10 @@
+alias,pop,parent,dims,gating_method,gating_args,collapseDataForGating ,groupBy ,preprocessing_method,preprocessing_args
+WithinLimits,+,root,"FSC-A,SSC-A",boundary,,,,,
+NotDebris,+,WithinLimits,FSC-A,mindensity,,,,,
+SingleCells,+,NotDebris,"FSC-A,FSC-H",singletGate,,,,,
+LiveCells,-,SingleCells,LIVE DEAD Blue-A,tailgate,tol = 0.05,,,,
+CD3+,+,LiveCells,CD3,mindensity,,,,,
+CD8+,+,CD3+,CD8,mindensity,,,,,
+TCR-,-,CD8+,TCR gd,tailgate,tol = 0.05,,,,
+CD45RA-,-,TCR-,CD45ra,mindensity,,,,,
+CD161+,+,CD45RA-,CD161,mindensity,,,,,
