@@ -56,3 +56,27 @@ fs_gated<-cytoset_to_flowSet(fs_gated)
 fs[[1]]
 fs_gated[[1]]
 
+#quick tsne
+library(Rtsne)
+ff_DS <- fs_gated[[1]][1:5000, ] # downsample data
+channels_of_interest <-  colnames(ff_DS)[c(7:42)]
+set.seed(2021)
+tsne <- Rtsne(ff_DS@exprs[, channels_of_interest])
+plot(tsne$Y)
+
+#function to get the markernames and to apply to the data dataframe
+get_markernames<-function(ff){ 
+  ff_markernames<-ff@parameters@data[1:2]
+  ff_markernames$com = ff_markernames$name
+  ff_markernames$com[!is.na(ff_markernames$desc)] = ff_markernames$desc[!is.na(ff_markernames$desc)]
+  return(ff_markernames$com)
+}
+
+#rename columns
+colnames(data)<-c("tSNE1","tSNE2",get_markernames(ff_DS))
+data<-data.frame(data)
+
+#plot tsne
+library(ggplot2)
+ggplot(data, aes(tSNE1, tSNE2)) +
+ geom_point(aes(colour = CD4))
